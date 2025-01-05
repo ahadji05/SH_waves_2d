@@ -5,7 +5,7 @@
 using namespace ppt;
 
 template<>
-int inject_source( Fields<MemSpaceHost> &fields, float_type amplitude, int iz, int ix, ExecutionSpaceSerial ){
+int inject_source( Fields<MemSpaceHost> &fields, float_type amplitude, int iz, int ix, ExecutionSpaceOpenMP ){
     int const nz = fields.V->get_nz();
     int const nx = fields.V->get_nx();
     if ( iz >= nz || ix >= nx ) return 1;
@@ -15,7 +15,7 @@ int inject_source( Fields<MemSpaceHost> &fields, float_type amplitude, int iz, i
 
 template<>
 int velocity_update( Fields<MemSpaceHost> &fields_new, Fields<MemSpaceHost> const& fields_old, Models<MemSpaceHost> const& model,
-    float_type dt, float_type dz, float_type dx, ExecutionSpaceSerial ){
+    float_type dt, float_type dz, float_type dx, ExecutionSpaceOpenMP ){
     
     int const nz = fields_new.V->get_nz();
     int const nx = fields_new.V->get_nx();
@@ -30,6 +30,7 @@ int velocity_update( Fields<MemSpaceHost> &fields_new, Fields<MemSpaceHost> cons
 
     float_type * const Vnew = fields_new.V->get_ptr();
 
+    #pragma omp parallel for schedule(static,1)
     for (int iz=0; iz < nz - 1; ++iz)
         for (int ix=0; ix < nx - 1; ++ix){
             int idx = iz * nx + ix;
@@ -41,7 +42,7 @@ int velocity_update( Fields<MemSpaceHost> &fields_new, Fields<MemSpaceHost> cons
 
 template<>
 int stresses_update( Fields<MemSpaceHost> &fields_new, Fields<MemSpaceHost> const& fields_old, Models<MemSpaceHost> const& model, 
-    float_type dt, float_type dz, float_type dx, ExecutionSpaceSerial ){
+    float_type dt, float_type dz, float_type dx, ExecutionSpaceOpenMP ){
 
     int const nz = fields_new.V->get_nz();
     int const nx = fields_new.V->get_nx();
@@ -58,6 +59,7 @@ int stresses_update( Fields<MemSpaceHost> &fields_new, Fields<MemSpaceHost> cons
     float_type * const Snew = fields_new.S->get_ptr();
     float_type * const Tnew = fields_new.T->get_ptr();
 
+    #pragma omp parallel for schedule(static,1)
     for (int iz=1; iz < nz; ++iz)
         for (int ix=1; ix < nx; ++ix){
             int idx = iz * nx + ix;

@@ -68,12 +68,14 @@ class WaveSimulator {
 };
 
 template <class ExecSpace> void WaveSimulator<ExecSpace>::check_CFL_condition( Models<MemSpace> const& models ) const {
-    static_assert( std::is_same<MemSpace,ppt::MemSpaceHost>::value, "THIS ROUTINE ACCESSES FROM HOST THE UNDERLYING POINTER!!!" );
+    float_type *vs;
+    ppt::MemSpaceHost::allocate(&vs, _nz * _nx);
+    MemSpace::copyToHost( vs, models.Vs->get_ptr(), _nz * _nx );
     float_type vmin = 1e10;
-    for ( int i=0; i < models.Vs->get_nElems(); ++i ) 
-        if ( models.Vs->get_ptr()[i] < vmin ) 
-            vmin = models.Vs->get_ptr()[i];
-    
+    for ( int i=0; i < _nz * _nx; ++i ) 
+        if ( vs[i] < vmin ) 
+            vmin = vs[i];
+    ppt::MemSpaceHost::release(vs);
     float_type cfl = ( (_dt/_dx)*std::sqrt(2)*vmin );
     std::cout << "CFL: " << cfl << std::endl;
     if ( cfl > 1 ) throw std::runtime_error("CFL STABILITY CONDITION NOT SATISFIED!");
