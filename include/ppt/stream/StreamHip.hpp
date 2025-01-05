@@ -27,7 +27,6 @@
 #define PPT_STREAM_HIP
 
 #include "ppt/stream/StreamBase.hpp"
-#include "ppt/definitions.hpp"
 #include "hip/hip_runtime.h"
 
 namespace ppt 

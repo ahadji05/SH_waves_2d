@@ -27,7 +27,6 @@
 #define PPT_STREAM_CUDA
 
 #include "ppt/stream/StreamBase.hpp"
-#include "ppt/definitions.hpp"
 #include "cuda_runtime.h"
 
 namespace ppt 
