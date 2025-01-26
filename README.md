@@ -4,12 +4,12 @@ Below you can find the instructions to run the demo and visualize the output sna
 
 ## 1) running this demo with OpenMP and visualizing the output snapshot is as simple as:
   mkdir build
-  
+
   cd build
 
   cmake .. -DUSE_OPENMP=ON
   
-  export OMP_NUM_THREADS=#nthreads_to_use
+  make
   
   ./../run.sh
 
@@ -19,6 +19,8 @@ Below you can find the instructions to run the demo and visualize the output sna
   cd build
   
   cmake .. -DUSE_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=#cuda_arch
+
+  make
   
   ./../run.sh
 
