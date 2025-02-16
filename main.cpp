@@ -21,12 +21,12 @@ int main( int argc, char *argv[] ){
     int nz = 400;
     int nx = 1000;
     int nt = 1501;
-    float_type dz = 2.5;
-    float_type dx = 2.5;
-    float_type dt = 0.0002;
-    float_type source_position_z = 50;
-    float_type source_position_x = 1250;
-    float_type ricker_fpeak = 20;
+    float_type dz = 1.5;
+    float_type dx = 1.5;
+    float_type dt = 0.0001;
+    float_type source_position_z = 400;
+    float_type source_position_x = 750;
+    float_type ricker_fpeak = 30;
 
     // Create model
     Models<memo_space> model;

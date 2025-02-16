@@ -93,6 +93,7 @@ template <class ExecSpace> void WaveSimulator<ExecSpace>::make_ricker(float_type
     for (int it = 1; it < _nt; ++it)
     {
         float_type t         = it * _dt;
+	t = t - 0.03;
         float_type term      = M_PI * M_PI * fpeak * fpeak * t * t;
         _wavelet[it]         = (1 - 2 * term) * exp(-term);
     }
